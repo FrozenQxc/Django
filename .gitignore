@@ -1,0 +1,7 @@
+
+taskmanager/manage.py
+taskmanager/taskmanager/__init__.py
+taskmanager/taskmanager/asgi.py
+taskmanager/taskmanager/settings.py
+taskmanager/taskmanager/urls.py
+taskmanager/taskmanager/wsgi.py
