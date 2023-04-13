@@ -1,16 +1,23 @@
-{% extends 'blog/base.html' %}
+{% extends "blog/base.html" %}
+
+{% load static %}
 
 {% block content %}
 
+<h1 id="blogtitle" class="font-weight-bold text-center">Блог</h1>
 
-<h2>Здесь написано {{ blogs|length }} поста!</h2>
+<h3 class="text-center mb-5">Здесь написано {{ blogs.count }} поста</h3>
 
 {% for blog in blogs %}
+<div class="row justify-content-center my-3">
+  <div class="col-md-10">
     <a href="{% url 'blog:detail' blog.id %}">
-        <h2>{{ blog.title }}</h2>
+      <h2>{{ blog.title }}</h2>
     </a>
-    <p>{{ blog.discription|truncatechars:100 }}</p>
-    <h5>{{ blog.date|date:'M Y d' }}</h5>
+    <h5 class="text-muted">{{ blog.date|date:'M d Y'|upper }}</h5>
+    <h4>{{ blog.description|striptags|truncatechars:100 }}</h4>
+  </div>
+</div>
 {% endfor %}
 
 {% endblock %}
