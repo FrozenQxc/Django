@@ -1,9 +1,16 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+
+<h2>Здесь написано {{ blogs|length }} поста!</h2>
 
 {% for blog in blogs %}
-
-<h2>{{ blog.title }}</h2>
-<p>{{ blog.discription }}</p>
-<h5>{{ blog.date }}</h5>
-
-
+    <a href="{% url 'blog:detail' blog.id %}">
+        <h2>{{ blog.title }}</h2>
+    </a>
+    <p>{{ blog.discription|truncatechars:100 }}</p>
+    <h5>{{ blog.date|date:'M Y d' }}</h5>
 {% endfor %}
+
+{% endblock %}
