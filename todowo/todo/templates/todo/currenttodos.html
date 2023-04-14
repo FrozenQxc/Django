@@ -1,1 +1,11 @@
-hello
+ {% extends 'todo/base.html' %}
+
+ {% block content %}
+ 
+ <br>
+ Привет друг!
+ <br>
+ 
+ <a href="{% url 'home' %}">Вернуться на главную страницу</a>
+
+ {% endblock  %} 
