@@ -8,7 +8,9 @@ from todo.views import (
     logout_user,
     login_user,
     create_todo,
-    viewtodo
+    view_todo,
+    complete_todo,
+    delete_todo
 )
 
 # The urlpatterns for the project
@@ -24,5 +26,7 @@ urlpatterns = [
     # Todo URLs
     path('create/', create_todo, name='create_todo'),
     path('current/', current_todos, name='current_todos'),
-    path('todo/<int:todo_pk>', viewtodo, name='viewtodo'),
+    path('todo/<int:todo_pk>', view_todo, name='view_todo'),
+    path('todo/<int:todo_pk>/complete', complete_todo, name='complete_todo'),
+    path('todo/<int:todo_pk>/delete', delete_todo, name='delete_todo'),
 ]
