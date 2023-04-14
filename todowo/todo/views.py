@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from .forms import TodoForm
+from .models import Todo
 
 def home(request):
     return render(request, 'todo/home.html')
@@ -19,7 +20,7 @@ def signup_user(request):
                 user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
                 user.save()
                 login(request, user)
-                return redirect('currenttodos') 
+                return redirect('current_todos') 
             else:
                 return render(request, 'todo/signup_user.html', {'form': UserCreationForm(), 'error': 'Пароли не совпадают'})
         except IntegrityError:
@@ -37,7 +38,7 @@ def login_user(request):
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             login(request, user)
-            return redirect('currenttodos')
+            return redirect('current_todos')
         else:
             return render(request, 'todo/login_user.html', {'form': AuthenticationForm(), 'error': 'Имя пользователя или пароль неверны'})
 
@@ -57,10 +58,13 @@ def create_todo(request):
             newtodo = form.save(commit=False)
             newtodo.user = request.user
             newtodo.save()
-            return redirect('currenttodos')
+            return redirect('current_todos')
         except ValueError:
             return render(request, 'todo/create_todo.html', {'form': TodoForm(), 'error': 'Переданны не верный данные'})
             
 
-def currenttodos(request):
-    return render(request, 'todo/currenttodos.html')
+def current_todos(request):
+    # фильтрация записией, отображение записей юзера
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
+    context = {'todos': todos}
+    return render(request, 'todo/current_todos.html', context)

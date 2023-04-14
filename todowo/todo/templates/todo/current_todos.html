@@ -1,0 +1,24 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <br>
+    <p>Привет, друг! Это твои заметки!</p>
+    <br>
+
+    <ul>
+        {% for todo in todos %}
+            <li>{% if todo.important %}
+                <b>{{ todo.title }}</b>
+                {% else %}
+                {{ todo.title }}
+                {% endif %}
+
+                {% if todo.memo %}
+                - {{ todo.memo }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'home' %}">Вернуться на главную страницу</a>
+{% endblock %}
