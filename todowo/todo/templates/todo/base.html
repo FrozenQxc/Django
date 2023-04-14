@@ -1,8 +1,10 @@
 {% if user.is_authenticated %}
   Вы вошли как: {{ user.username }}
+
   <form action="{% url 'logout_user' %}" method='POST'>
     <a href="{% url 'current_todos' %}">Аккаунт</a>
     <a href="{% url 'create_todo' %}">Создать запись</a>
+    <a href="{% url 'completed_todos' %}">Выполненые задачи</a>
     <button type="submit">Выход</button>
     {% csrf_token %}
   </form>

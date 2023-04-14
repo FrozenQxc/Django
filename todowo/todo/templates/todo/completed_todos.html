@@ -2,7 +2,7 @@
 
 {% block content %}
     <br>
-    <p>Привет, друг! Это твои заметки!</p>
+    <p> Это твои выполненые задачи</p>
     <br>
 
     <ul>
@@ -14,15 +14,11 @@
                     {% else %}
                     {{ todo.title }}
                     {% endif %}
-
-                    {% comment %} {% if todo.memo %}
-                    - {{ todo.memo }}
-                    {% endif %} {% endcomment %}
+                    {{ todo.datecompleted|date:'M j Y H:i' }}
                 </a>
             </li>
         {% endfor %}
     </ul>
 
     <a href="{% url 'home' %}">Вернуться на главную страницу</a>
-    
 {% endblock %}
