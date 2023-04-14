@@ -3,14 +3,14 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
+from .forms import TodoForm
 
 def home(request):
     return render(request, 'todo/home.html')
 
-# шаблон для регистрации пользователя
+# Регистрация пользователя
 def signup_user(request):
     if request.method == 'GET':
-
         return render(request, 'todo/signup_user.html', {'form': UserCreationForm()})
     else:
         try:
@@ -28,7 +28,7 @@ def signup_user(request):
         except KeyError:
             return render(request, 'todo/signup_user.html', {'form': UserCreationForm(), 'error': 'Все поля должны быть заполнены'})
 
-# Шаблон для входа пользователя
+# Вход пользователя в систему
 def login_user(request):
     if request.method == 'GET':
         return render(request, 'todo/login_user.html', {'form': AuthenticationForm()})
@@ -37,7 +37,7 @@ def login_user(request):
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('currenttodos')
         else:
             return render(request, 'todo/login_user.html', {'form': AuthenticationForm(), 'error': 'Имя пользователя или пароль неверны'})
 
@@ -46,9 +46,21 @@ def logout_user(request):
     if request.method == 'POST':
         logout(request)
         return redirect('home')
-    
 
-        
+# форма которая сохраняет запись пользовтеля 
+def create_todo(request):
+    if request.method == 'GET':
+        return render(request, 'todo/create_todo.html', {'form': TodoForm()})
+    else:
+        try:
+            form = TodoForm(request.POST)
+            newtodo = form.save(commit=False)
+            newtodo.user = request.user
+            newtodo.save()
+            return redirect('currenttodos')
+        except ValueError:
+            return render(request, 'todo/create_todo.html', {'form': TodoForm(), 'error': 'Переданны не верный данные'})
+            
 
 def currenttodos(request):
     return render(request, 'todo/currenttodos.html')
